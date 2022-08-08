@@ -11,7 +11,7 @@ import br.com.bytebank.banco.modelo.Conta;
 import br.com.bytebank.banco.modelo.ContaCorrente;
 import br.com.bytebank.banco.modelo.ContaPoupanca;
 
-public class TesteComparatorString {
+public class TesteClasseAnonima {
 
 	public static void main(String[] args) {
 
@@ -45,38 +45,30 @@ public class TesteComparatorString {
 		lista.add(cc3);
 		lista.add(cc4);
 
-		for (Conta conta : lista) {
-			System.out.println(conta);
-		}
+		lista.sort(new Comparator<Conta>() { // classe anonima (quando não tem nome)
 
-		//NumeroDaContaComparator comparator = new NumeroDaContaComparator();
-		//TitularDaContaComparator titularComparator = new TitularDaContaComparator();
+			@Override
+			public int compare(Conta c1, Conta c2) {
+				return Integer.compare(c1.getNumero(), c2.getNumero());
+			}
+		});
 
 		System.out.println("---------");
 
-		//lista.sort(new TitularDaContaComparator());
-		
-		//Collections.sort(lista, new TitularDaContaComparator());
+		Comparator<Conta> comp = new Comparator<Conta>() { //classe anonima
 
-		Collections.sort(lista);
-		
+			@Override
+			public int compare(Conta c1, Conta c2) {
+
+				String nomeC1 = c1.getTitular().getNome();
+				String nomeC2 = c2.getTitular().getNome();
+
+				return nomeC1.compareTo(nomeC2);
+			}
+		};
+
 		for (Conta conta : lista) {
 			System.out.println(conta + ", " + conta.getTitular().getNome());
 		}
-
 	}
-
-}
-
-class TitularDaContaComparator implements Comparator<Conta> {
-
-	@Override
-	public int compare(Conta c1, Conta c2) {
-
-		String nomeC1 = c1.getTitular().getNome();
-		String nomeC2 = c2.getTitular().getNome();
-
-		return nomeC1.compareTo(nomeC2);
-	}
-
 }
